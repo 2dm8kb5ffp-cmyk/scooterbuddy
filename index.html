@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#081629">
+<meta name="description" content="ScooterBuddy - houd je scooter, onderhoud en kosten bij.">
+<link rel="manifest" href="manifest.json">
+<title>ScooterBuddy</title>
+<style>
+:root{--bg:#071426;--panel:#10233c;--panel2:#142b48;--blue:#3d9cff;--cyan:#65d5ff;--text:#f3f7fc;--muted:#9aadc3;--line:#203955;--green:#4dd6a0;--red:#ff7b83}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#08182d,#061120 60%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:22px 18px 12px;max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#2f8fff,#61d5ff);display:grid;place-items:center;color:#061629;font-size:22px;font-weight:900;box-shadow:0 8px 25px #168aff40}
+h1{font-size:20px;margin:0;letter-spacing:-.5px}.tag{font-size:10px;color:var(--muted);letter-spacing:1.7px;margin-top:3px}
+main{max-width:760px;margin:auto;padding:8px 16px 100px}
+.welcome{margin:10px 0 18px}.welcome h2{font-size:25px;margin:0 0 5px;letter-spacing:-.7px}.welcome p{color:var(--muted);margin:0;font-size:14px}
+.hero{background:linear-gradient(135deg,#12345a,#0d2542 55%,#123b61);border:1px solid #2a5278;border-radius:23px;padding:20px;position:relative;overflow:hidden;min-height:170px}
+.hero:after{content:"🛵";position:absolute;right:12px;bottom:-15px;font-size:105px;opacity:.16;transform:rotate(-12deg)}
+.eyebrow{color:#9dcfff;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}.hero h3{font-size:22px;margin:9px 0 5px}.hero p{color:#b9cde2;font-size:13px;margin:0;max-width:68%}
+.hero .pill{display:inline-block;margin-top:16px;background:#ffffff17;border:1px solid #ffffff25;padding:7px 10px;border-radius:20px;font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.stat,.card{background:linear-gradient(180deg,#112641,#0d1f35);border:1px solid var(--line);border-radius:18px;padding:16px}
+.stat .label{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:22px;margin-top:7px}.stat small{color:var(--muted);font-size:11px}
+.section-title{font-size:16px;margin:22px 2px 10px}
+.card{margin-bottom:12px}.card h3{font-size:15px;margin:0 0 12px}.muted{color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row+.row{margin-top:12px}
+.btn{border:0;border-radius:13px;background:linear-gradient(135deg,#2589f5,#42b8ff);color:#041426;font-weight:800;padding:12px 15px;font-size:13px;cursor:pointer}
+.btn.secondary{background:#1a3553;color:#dcecff;border:1px solid #315477}.btn.danger{background:#4a202b;color:#ffdce0}
+.btn.full{width:100%;margin-top:10px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#081629f2;backdrop-filter:blur(18px);border-top:1px solid #1c3550;display:flex;justify-content:center;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
+nav button{background:none;border:0;color:#8197b0;font-size:10px;flex:1;max-width:145px;padding:5px 2px;cursor:pointer}
+nav button span{display:block;font-size:20px;margin-bottom:3px}nav button.active{color:#64bdff}
+.page{display:none}.page.active{display:block}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #294663;background:#091a2e;color:var(--text);font:inherit;margin:6px 0 13px;outline:none}
+label{font-size:12px;color:#b7c9dd}form .btn{margin-top:4px}
+.item{padding:12px 0;border-top:1px solid var(--line)}.item:first-of-type{border-top:0}.item strong{font-size:13px}.item small{display:block;color:var(--muted);margin-top:4px}
+.empty{color:var(--muted);font-size:13px;padding:12px 0}
+.note{background:#102b45;border:1px solid #285173;border-radius:14px;padding:13px;color:#b9d6ef;font-size:12px;line-height:1.5}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#e8f5ff;color:#09203a;padding:11px 16px;border-radius:20px;font-size:12px;font-weight:700;display:none;z-index:10}
+@media(min-width:600px){main{padding-left:22px;padding-right:22px}.hero{padding:25px}.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">S</div><div><h1>ScooterBuddy</h1><div class="tag">YOUR SCOOTER. UNDER CONTROL.</div></div></div><div style="font-size:12px;color:#8fa9c5">V 1.0</div></header>
+<main>
+<section id="dashboard" class="page active">
+ <div class="welcome"><h2>Welkom terug 👋</h2><p>Alles voor jouw scooter op één plek.</p></div>
+ <div class="hero"><div class="eyebrow">Mijn scooter</div><h3 id="dashName">Mijn scooter</h3><p id="dashDetails">Voeg je scooter toe om te beginnen.</p><span class="pill" id="dashKm">Kilometerstand nog niet ingevuld</span></div>
+ <div class="grid">
+  <div class="stat"><div class="label">Onderhoudsbeurten</div><strong id="maintenanceCount">0</strong><small>Geregistreerd</small></div>
+  <div class="stat"><div class="label">Totale uitgaven</div><strong id="totalCosts">€ 0,00</strong><small>Alle geregistreerde kosten</small></div>
+ </div>
+ <div class="section-title">Snelle acties</div>
+ <div class="grid">
+  <button class="btn" onclick="showPage('scooter')">＋ Scooter toevoegen</button>
+  <button class="btn secondary" onclick="showPage('maintenance')">＋ Onderhoud</button>
+  <button class="btn secondary" onclick="showPage('expenses')">＋ Uitgave</button>
+  <button class="btn secondary" onclick="showPage('settings')">⚙ Instellingen</button>
+ </div>
+ <div class="section-title">Laatste activiteit</div><div class="card" id="recent"><div class="empty">Nog geen activiteit. Voeg je scooter of eerste registratie toe.</div></div>
+</section>
+
+<section id="scooter" class="page">
+ <div class="welcome"><h2>Mijn scooter</h2><p>Vul je scootergegevens in.</p></div>
+ <div class="card"><form id="scooterForm">
+  <label>Merk</label><input id="brand" placeholder="Bijv. Peugeot" required>
+  <label>Model</label><input id="model" placeholder="Bijv. Vivacity" required>
+  <label>Bouwjaar</label><input id="year" type="number" min="1900" max="2099" placeholder="Bijv. 2005">
+  <label>Type motor</label><select id="engine"><option>2-takt</option><option>4-takt</option><option>Elektrisch</option></select>
+  <label>Kilometerstand</label><input id="km" type="number" min="0" placeholder="Bijv. 12500">
+  <button class="btn full" type="submit">Scooter opslaan</button>
+ </form></div>
+ <div class="note">Tip: houd je kilometerstand actueel. Zo kun je onderhoud en kosten beter bijhouden. Volg voor onderhoud altijd de handleiding van jouw scooter.</div>
+</section>
+
+<section id="maintenance" class="page">
+ <div class="welcome"><h2>Onderhoud</h2><p>Bewaar wat je aan je scooter hebt gedaan.</p></div>
+ <div class="card"><form id="maintenanceForm">
+  <label>Wat heb je gedaan?</label><input id="maintTitle" placeholder="Bijv. Bougie vervangen" required>
+  <label>Datum</label><input id="maintDate" type="date" required>
+  <label>Kilometerstand</label><input id="maintKm" type="number" min="0" placeholder="Bijv. 12500">
+  <label>Notitie (optioneel)</label><textarea id="maintNote" rows="2" placeholder="Extra informatie..."></textarea>
+  <button class="btn full" type="submit">Onderhoud opslaan</button>
+ </form></div>
+ <div class="section-title">Onderhoudsgeschiedenis</div><div class="card" id="maintenanceList"><div class="empty">Nog geen onderhoud geregistreerd.</div></div>
+</section>
+
+<section id="expenses" class="page">
+ <div class="welcome"><h2>Uitgaven</h2><p>Houd bij wat jouw scooter kost.</p></div>
+ <div class="card"><form id="expenseForm">
+  <label>Omschrijving</label><input id="expenseTitle" placeholder="Bijv. Benzine" required>
+  <label>Bedrag in euro's</label><input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="Bijv. 8.50" required>
+  <label>Categorie</label><select id="expenseCategory"><option>Benzine</option><option>Onderhoud</option><option>Reparatie</option><option>Onderdelen</option><option>Verzekering</option><option>Overig</option></select>
+  <label>Datum</label><input id="expenseDate" type="date" required>
+  <button class="btn full" type="submit">Uitgave opslaan</button>
+ </form></div>
+ <div class="section-title">Uitgavenoverzicht</div><div class="card" id="expenseList"><div class="empty">Nog geen uitgaven geregistreerd.</div></div>
+</section>
+
+<section id="settings" class="page">
+ <div class="welcome"><h2>Instellingen</h2><p>Beheer jouw ScooterBuddy-gegevens.</p></div>
+ <div class="card"><h3>Jouw gegevens</h3><p class="muted" style="font-size:13px;line-height:1.6">Deze prototypeversie bewaart gegevens lokaal in de browser op dit apparaat. Verwijder je browsergegevens of wissel van apparaat, dan kunnen gegevens verloren gaan.</p><button class="btn secondary full" onclick="exportData()">Download back-up (JSON)</button><button class="btn danger full" onclick="clearData()">Wis alle appgegevens</button></div>
+ <div class="note"><b>Over ScooterBuddy</b><br>Versie 1.0 prototype. De app geeft geen technisch veiligheidsadvies en vervangt geen onderhoudshandleiding of monteur.</div>
+</section>
+</main>
+<nav>
+ <button class="active" data-page="dashboard" onclick="showPage('dashboard')"><span>⌂</span>Home</button>
+ <button data-page="scooter" onclick="showPage('scooter')"><span>🛵</span>Scooter</button>
+ <button data-page="maintenance" onclick="showPage('maintenance')"><span>🔧</span>Onderhoud</button>
+ <button data-page="expenses" onclick="showPage('expenses')"><span>€</span>Uitgaven</button>
+ <button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Meer</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='scooterbuddy_v1';
+let data=JSON.parse(localStorage.getItem(KEY)||'{"scooter":null,"maintenance":[],"expenses":[]}');
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'}).format(n);
+const today=()=>new Date().toISOString().slice(0,10);
+$('maintDate').value=today();$('expenseDate').value=today();
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render();toast('Opgeslagen!')}
+function toast(msg){let t=$('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',1900)}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo(0,0)}
+function render(){
+ const s=data.scooter;
+ $('dashName').textContent=s?(s.brand+' '+s.model):'Mijn scooter';
+ $('dashDetails').textContent=s?([s.year,s.engine].filter(Boolean).join(' · ')||'Scooterprofiel opgeslagen'):'Voeg je scooter toe om te beginnen.';
+ $('dashKm').textContent=s&&s.km!==''?Number(s.km).toLocaleString('nl-NL')+' km':'Kilometerstand nog niet ingevuld';
+ $('maintenanceCount').textContent=data.maintenance.length;
+ const total=data.expenses.reduce((a,x)=>a+Number(x.amount),0);
+ $('totalCosts').textContent=money(total);
+ $('maintenanceList').innerHTML=data.maintenance.length?data.maintenance.slice().reverse().map(x=>`<div class="item"><strong>${esc(x.title)}</strong><small>${esc(x.date)} · ${x.km?Number(x.km).toLocaleString('nl-NL')+' km':'Geen km-stand'}${x.note?' · '+esc(x.note):''}</small></div>`).join(''):'<div class="empty">Nog geen onderhoud geregistreerd.</div>';
+ $('expenseList').innerHTML=data.expenses.length?data.expenses.slice().reverse().map(x=>`<div class="item row"><div><strong>${esc(x.title)}</strong><small>${esc(x.category)} · ${esc(x.date)}</small></div><b>${money(Number(x.amount))}</b></div>`).join(''):'<div class="empty">Nog geen uitgaven geregistreerd.</div>';
+ let items=[...data.maintenance.map(x=>({date:x.date,label:'Onderhoud: '+x.title})),...data.expenses.map(x=>({date:x.date,label:'Uitgave: '+x.title}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
+ $('recent').innerHTML=items.length?items.map(x=>`<div class="item"><strong>${esc(x.label)}</strong><small>${esc(x.date)}</small></div>`).join(''):'<div class="empty">Nog geen activiteit. Voeg je scooter of eerste registratie toe.</div>';
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('scooterForm').addEventListener('submit',e=>{e.preventDefault();data.scooter={brand:$('brand').value.trim(),model:$('model').value.trim(),year:$('year').value,engine:$('engine').value,km:$('km').value};save();showPage('dashboard')});
+$('maintenanceForm').addEventListener('submit',e=>{e.preventDefault();data.maintenance.push({title:$('maintTitle').value.trim(),date:$('maintDate').value,km:$('maintKm').value,note:$('maintNote').value.trim()});e.target.reset();$('maintDate').value=today();save()});
+$('expenseForm').addEventListener('submit',e=>{e.preventDefault();data.expenses.push({title:$('expenseTitle').value.trim(),amount:Number($('expenseAmount').value),category:$('expenseCategory').value,date:$('expenseDate').value});e.target.reset();$('expenseDate').value=today();save()});
+function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='scooterbuddy-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function clearData(){if(confirm('Weet je zeker dat je alle ScooterBuddy-gegevens wilt wissen?')){data={scooter:null,maintenance:[],expenses:[]};save();toast('Alle gegevens gewist')}}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>
